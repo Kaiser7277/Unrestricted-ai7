@@ -2,18 +2,19 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>My Unrestricted AI</title>
     <style>
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: Arial, sans-serif; background: #121212; color: white; display: flex; flex-direction: column; height: 100vh; }
-        #chat-box { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; }
-        .msg { padding: 10px 15px; border-radius: 10px; max-width: 80%; word-break: break-word; line-height: 1.4; }
+        body { font-family: Arial, sans-serif; background: #121212; color: white; display: flex; flex-direction: column; height: 100vh; height: -webkit-fill-available; overflow: hidden; }
+        #chat-box { flex: 1; padding: 15px; overflow-y: auto; display: flex; flex-direction: column; gap: 10px; margin-bottom: 70px; }
+        .msg { padding: 10px 15px; border-radius: 10px; max-width: 85%; word-break: break-word; line-height: 1.4; font-size: 15px; }
         .user { background: #007bff; align-self: flex-end; }
         .ai { background: #2d2d2d; align-self: flex-start; white-space: pre-wrap; }
-        #input-area { display: flex; padding: 10px; background: #1e1e1e; gap: 10px; }
-        input { flex: 1; padding: 12px; border: none; border-radius: 5px; background: #2a2a2a; color: white; font-size: 16px; }
-        button { padding: 12px 20px; border: none; border-radius: 5px; background: #007bff; color: white; font-weight: bold; font-size: 16px; }
+        #input-area { display: flex; padding: 12px; background: #1e1e1e; gap: 10px; position: fixed; bottom: 0; left: 0; right: 0; width: 100%; border-top: 1px solid #2d2d2d; z-index: 1000; }
+        input { flex: 1; padding: 14px; border: none; border-radius: 8px; background: #2a2a2a; color: white; font-size: 16px; outline: none; }
+        button { padding: 14px 22px; border: none; border-radius: 8px; background: #007bff; color: white; font-weight: bold; font-size: 16px; cursor: pointer; }
+        button:active { background: #0056b3; }
     </style>
 </head>
 <body>
@@ -47,7 +48,6 @@
             chatBox.scrollTop = chatBox.scrollHeight;
 
             try {
-                // लाइव सर्वर पर यह डायरेक्ट URL बिना किसी एरर के काम करेगा
                 const response = await fetch("https://openrouter.ai", {
                     method: "POST",
                     headers: {
@@ -74,6 +74,14 @@
             }
             chatBox.scrollTop = chatBox.scrollHeight;
         }
+
+        // Enter key dabane par bhi message send ho jaye, uske liye:
+        document.getElementById("user-input").addEventListener("keypress", function(event) {
+            if (event.key === "Enter") {
+                sendMessage();
+            }
+        });
     </script>
 </body>
 </html>
+
